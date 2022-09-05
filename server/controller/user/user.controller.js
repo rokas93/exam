@@ -1,6 +1,7 @@
 import User from '../../models/User.model.js';
 import asyncHandler from 'express-async-handler';
 
+// -- get all users
 export const getUsers = asyncHandler(async (req, res) => {
   const users = await User.find();
 
@@ -12,30 +13,7 @@ export const getUsers = asyncHandler(async (req, res) => {
   }
 });
 
-export const deleteUser = asyncHandler(async (req, res) => {
-  const user = await User.findByIdAndDelete(req.params.id);
-
-  if (user) {
-    res.status(200).send('User deleted!');
-  } else {
-    res.status(404).send('User not found!');
-    throw new Error('User not found!');
-  }
-});
-
-export const updateUser = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-
-  const user = await User.findByIdAndUpdate(id, req.body);
-
-  if (user) {
-    res.status(200).send('User updated!');
-  } else {
-    res.status(404).send('User not found!');
-    throw new Error('User not found!');
-  }
-});
-
+// -- create single user
 export const createUser = asyncHandler(async (req, res) => {
   const { name, email, date, time } = req.body;
 
@@ -51,5 +29,33 @@ export const createUser = asyncHandler(async (req, res) => {
   } else {
     res.status(400).send('Invalid data.');
     throw new Error('Invalid data.');
+  }
+});
+
+// -- update single user by req.params.id
+export const updateUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const user = await User.findByIdAndUpdate(id, req.body);
+
+  if (user) {
+    res.status(200).send('User updated!');
+  } else {
+    res.status(404).send('User not found!');
+    throw new Error('User not found!');
+  }
+});
+
+// -- delete single user by req.params.id
+export const deleteUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const user = await User.findByIdAndDelete(id);
+
+  if (user) {
+    res.status(200).send('User deleted!');
+  } else {
+    res.status(404).send('User not found!');
+    throw new Error('User not found!');
   }
 });
