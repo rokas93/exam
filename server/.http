@@ -1,0 +1,26 @@
+POST http://localhost:5000/api/users
+content-type: application/json
+
+{
+  "name": "Tom",
+  "email": "tom@email.com",
+  "date": "2002-12-09",
+  "time": "22:53:05"
+}
+
+###
+POST http://localhost:5000/api/users/6316367643781733f229bf49
+content-type: application/json
+
+{
+  "name": "Rose",
+  "email": "mike@email.com",
+  "date": "2002-12-09",
+  "time": "22:53:05"
+}
+
+###
+DELETE http://localhost:5000/api/users/63163650036ce8c56b0258cc
+
+###
+GET http://localhost:5000/api/users
