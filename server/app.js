@@ -26,7 +26,7 @@ app.use(cors());
 app.post('/api/users', createUser);
 
 // -- update user
-app.post('/api/users/:id', updateUser);
+app.put('/api/users/:id', updateUser);
 
 // -- delete user
 app.delete('/api/users/:id', deleteUser);

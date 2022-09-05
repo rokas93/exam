@@ -9,7 +9,7 @@ content-type: application/json
 }
 
 ###
-POST http://localhost:5000/api/users/6316367643781733f229bf49
+PUT http://localhost:5000/api/users/6316367643781733f229bf49
 content-type: application/json
 
 {
