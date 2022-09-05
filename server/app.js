@@ -22,6 +22,9 @@ app.use(express.json());
 app.use(cors());
 
 // Routes
+// -- get all users
+app.get('/api/users', getUsers);
+
 // -- create new user
 app.post('/api/users', createUser);
 
@@ -30,8 +33,5 @@ app.put('/api/users/:id', updateUser);
 
 // -- delete user
 app.delete('/api/users/:id', deleteUser);
-
-// -- get all users
-app.get('/api/users', getUsers);
 
 app.listen(PORT, () => console.log(`Server is runnging on port: ${PORT}`));
