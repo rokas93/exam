@@ -1,25 +1,30 @@
 import axios from 'axios';
 
+const HOST = `http://localhost:5000`;
+
 class API {
-  async get() {
-    console.log('Get logic');
+  async getUsers() {
+    const { data } = await axios.get(HOST + '/api/users');
 
-    return;
+    return data;
   }
 
-  async create() {
-    console.log('Create logic');
-    return;
+  async createUser(userData) {
+    const { data } = await axios.post(HOST + '/api/users', userData);
+
+    return data;
   }
 
-  async edit() {
-    console.log('Edit logic');
-    return;
+  async editUser(userId) {
+    const { data } = await axios.put(HOST + `/api/users/${userId}`);
+
+    return data;
   }
 
-  async delete() {
-    console.log('Delete logic');
-    return;
+  async deleteUser(userId) {
+    const { data } = await axios.delete(HOST + `/api/users/${userId}`);
+
+    return data;
   }
 }
 
