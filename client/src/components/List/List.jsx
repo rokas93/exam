@@ -1,25 +1,30 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import useFetch from '../../hooks/useFetch';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchUsers } from '../../features/userSlice';
+import ListItem from '../ListItem';
+import { ListStyled } from './List.styled';
 
 const List = () => {
-  const { data, isLoading, error } = useFetch(
-    'http://localhost:5000/api/users'
-  );
+  const dispatch = useDispatch();
+  const { users, status, error } = useSelector((state) => state.users);
 
-  return (
-    <>
-      {isLoading ? (
-        <p>Loading ...</p>
-      ) : (
-        <ul>
-          {data.map((user) => (
-            <li key={user._id}>{user.name}</li>
-          ))}
-        </ul>
-      )}
-    </>
-  );
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchUsers());
+    }
+  }, [dispatch, status]);
+
+  let content;
+
+  if (status === 'loading') {
+    content = <p>Loading...</p>;
+  } else if (status === 'succeeded') {
+    content = users.map((user) => <ListItem key={user._id} user={user} />);
+  } else if (status === 'failed') {
+    content = <p>{error}</p>;
+  }
+
+  return <ListStyled>{content}</ListStyled>;
 };
 
 export default List;
