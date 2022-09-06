@@ -7,27 +7,6 @@ export const FormStyled = styled.form`
 
   margin-bottom: 20px;
 
-  & label input {
-    display: block;
-    padding: 5px 10px;
-    margin-top: 10px;
-
-    box-shadow: inset 0 0.0625em 0.125em rgb(10 10 10 / 5%);
-    background-color: #fff;
-
-    border: 1px solid #dbdbdb;
-
-    border-radius: 0.375em;
-    color: #363636;
-
-    outline: none;
-
-    &:focus {
-      box-shadow: 0 0 0 0.125em rgb(72 95 199 / 25%);
-      border-color: #485fc7;
-    }
-  }
-
   & label span {
     color: #f14668;
     font-size: 14px;
@@ -39,5 +18,26 @@ export const FormStyled = styled.form`
   & button {
     justify-self: left;
     align-self: end;
+  }
+`;
+
+export const InputStyled = styled.input`
+  display: block;
+  padding: 5px 10px;
+  margin-top: 10px;
+
+  box-shadow: inset 0 0.0625em 0.125em rgb(10 10 10 / 5%);
+  background-color: #fff;
+
+  border: 1px solid ${({ isError }) => (isError ? '#f14668' : '#dbdbdb')};
+
+  border-radius: 0.375em;
+  color: #363636;
+
+  outline: none;
+
+  &:focus {
+    box-shadow: 0 0 0 0.125em rgb(72 95 199 / 25%);
+    border-color: #485fc7;
   }
 `;
