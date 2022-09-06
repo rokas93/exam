@@ -5,6 +5,8 @@ export const FormStyled = styled.form`
   grid-template-columns: repeat(5, 1fr);
   gap: 10px;
 
+  margin-bottom: 20px;
+
   & label input {
     display: block;
     padding: 5px 10px;
@@ -24,6 +26,14 @@ export const FormStyled = styled.form`
       box-shadow: 0 0 0 0.125em rgb(72 95 199 / 25%);
       border-color: #485fc7;
     }
+  }
+
+  & label span {
+    color: #f14668;
+    font-size: 14px;
+    padding: 5px 10px;
+
+    position: absolute;
   }
 
   & button {
