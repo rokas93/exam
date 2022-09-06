@@ -39,7 +39,7 @@ export const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findByIdAndUpdate(id, req.body);
 
   if (user) {
-    res.status(200).send('User updated!');
+    res.status(200).json(user);
   } else {
     res.status(404).send('User not found!');
     throw new Error('User not found!');
@@ -53,7 +53,7 @@ export const deleteUser = asyncHandler(async (req, res) => {
   const user = await User.findByIdAndDelete(id);
 
   if (user) {
-    res.status(200).send('User deleted!');
+    res.status(200).json(user);
   } else {
     res.status(404).send('User not found!');
     throw new Error('User not found!');
