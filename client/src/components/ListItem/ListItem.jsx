@@ -56,33 +56,42 @@ const ListItem = ({ user }) => {
   };
 
   return (
-    <ListItemStyled onSubmit={handleSubmit} isEdit={isEdit}>
+    <ListItemStyled onSubmit={handleSubmit}>
       <InputStyled
         type='text'
-        value={values.name}
-        onChange={handleChange}
+        id={'name'}
         disabled={!isEdit}
+        isEdit={isEdit}
+        onChange={handleChange}
+        value={values.name}
         isError={errors.name}
       />
+
       <InputStyled
         type='text'
-        value={values.email}
-        onChange={handleChange}
+        id={'email'}
         disabled={!isEdit}
+        isEdit={isEdit}
+        onChange={handleChange}
+        value={values.email}
         isError={errors.email}
       />
       <InputStyled
         type='date'
-        value={values.date}
-        onChange={handleChange}
+        id={'date'}
         disabled={!isEdit}
+        isEdit={isEdit}
+        onChange={handleChange}
+        value={values.date}
         isError={errors.date}
       />
       <InputStyled
         type='time'
-        value={values.time}
-        onChange={handleChange}
+        id={'time'}
         disabled={!isEdit}
+        isEdit={isEdit}
+        onChange={handleChange}
+        value={values.time}
         isError={errors.time}
       />
       <ButtonWrapperStyled>
