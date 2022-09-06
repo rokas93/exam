@@ -1,19 +1,42 @@
 import { useState } from 'react';
-import { ButtonWrapperStyled, ListItemStyled } from './ListItem.styled';
+import {
+  ButtonWrapperStyled,
+  InputStyled,
+  ListItemStyled,
+} from './ListItem.styled';
 import { useDispatch } from 'react-redux';
 import { deleteUser, updateUser } from '../../features/userSlice';
 import Button from '../Button';
+import { useFormik } from 'formik';
+import userValidation from '../../shared/userValidation';
 
 const ListItem = ({ user }) => {
   const dispatch = useDispatch();
   const [isEdit, setIsEdit] = useState(false);
   const [status, setStatus] = useState('idle');
-  const [initialUser, setInitialUser] = useState({
-    id: user._id,
-    name: user.name,
-    email: user.email,
-    date: user.date,
-    time: user.time,
+
+  const { values, errors, handleChange, handleSubmit } = useFormik({
+    initialValues: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      date: user.date,
+      time: user.time,
+    },
+    validationSchema: userValidation,
+    onSubmit: (values) => {
+      if (status === 'idle') {
+        try {
+          setIsEdit(false);
+
+          setStatus('pending');
+          dispatch(updateUser(values));
+          setStatus('idle');
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    },
   });
 
   const handleDelete = (id) => {
@@ -28,66 +51,46 @@ const ListItem = ({ user }) => {
     }
   };
 
-  const handleDone = (e) => {
-    e.preventDefault();
-
-    if (status === 'idle') {
-      try {
-        setIsEdit(false);
-
-        setStatus('pending');
-        dispatch(updateUser(initialUser));
-        setStatus('idle');
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
-
   const handleEdit = () => {
     setIsEdit(true);
   };
 
   return (
-    <ListItemStyled onSubmit={handleDone} isEdit={isEdit}>
-      <input
+    <ListItemStyled onSubmit={handleSubmit} isEdit={isEdit}>
+      <InputStyled
         type='text'
-        value={initialUser.name}
-        onChange={(e) =>
-          setInitialUser((prev) => ({ ...prev, name: e.target.value }))
-        }
+        value={values.name}
+        onChange={handleChange}
         disabled={!isEdit}
+        isError={errors.name}
       />
-      <input
+      <InputStyled
         type='text'
-        value={initialUser.email}
-        onChange={(e) =>
-          setInitialUser((prev) => ({ ...prev, email: e.target.value }))
-        }
+        value={values.email}
+        onChange={handleChange}
         disabled={!isEdit}
+        isError={errors.email}
       />
-      <input
+      <InputStyled
         type='date'
-        value={initialUser.date}
-        onChange={(e) =>
-          setInitialUser((prev) => ({ ...prev, date: e.target.value }))
-        }
+        value={values.date}
+        onChange={handleChange}
         disabled={!isEdit}
+        isError={errors.date}
       />
-      <input
+      <InputStyled
         type='time'
-        value={initialUser.time}
-        onChange={(e) =>
-          setInitialUser((prev) => ({ ...prev, time: e.target.value }))
-        }
+        value={values.time}
+        onChange={handleChange}
         disabled={!isEdit}
+        isError={errors.time}
       />
       <ButtonWrapperStyled>
         <Button
           type={'button'}
           text={!isEdit ? 'Edit' : 'Submit'}
           bg={'info'}
-          action={!isEdit ? handleEdit : handleDone}
+          action={!isEdit ? handleEdit : handleSubmit}
         />
         <Button
           type={'button'}
