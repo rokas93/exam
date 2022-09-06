@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const TableStyled = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
 
   margin: 50px 0;
 `;
