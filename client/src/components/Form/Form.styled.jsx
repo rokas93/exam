@@ -7,6 +7,11 @@ export const FormStyled = styled.form`
 
   margin-bottom: 20px;
 
+  & label::before {
+    content: '* ';
+    color: red;
+  }
+
   & label span {
     color: #f14668;
     font-size: 14px;
