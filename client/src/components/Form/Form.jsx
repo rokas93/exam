@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FormStyled } from './Form.styled';
+import { FormStyled, InputStyled } from './Form.styled';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import userValidation from '../../shared/userValidation';
@@ -35,48 +35,52 @@ const Form = () => {
     <FormStyled onSubmit={handleSubmit}>
       <label htmlFor='name'>
         Client name:
-        <input
+        <InputStyled
           placeholder={'Name'}
           type='text'
           id='name'
           onChange={handleChange}
           value={values.name}
+          isError={errors.name}
         />
         {errors.name && <span>{errors.name}</span>}
       </label>
 
       <label htmlFor='email'>
         Client email:
-        <input
+        <InputStyled
           placeholder={'email@email.com'}
           type='text'
           id='email'
           onChange={handleChange}
           value={values.email}
+          isError={errors.email}
         />
         {errors.email && <span>{errors.email}</span>}
       </label>
 
       <label htmlFor='date'>
         Reservation date:
-        <input
+        <InputStyled
           type='date'
           id='date'
           onChange={handleChange}
           value={values.date}
+          isError={errors.date}
         />
         {errors.date && <span>{errors.date}</span>}
       </label>
 
       <label htmlFor='time'>
         Reservation time:
-        <input
+        <InputStyled
           type='time'
           id='time'
           min={'08:00'}
           max={'17:00'}
           onChange={handleChange}
           value={values.time}
+          isError={errors.time}
         />
         {errors.time && <span>{errors.time}</span>}
       </label>
