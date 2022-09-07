@@ -5,6 +5,7 @@ This app functionality: create new, edit and delete existing data. All created d
 ## Back End
 
 **Tech stacks used:**\
+
 NodeJS framework **ExpressJS**.\
 No sql database **mongoDB**.
 
@@ -14,6 +15,7 @@ We have four routes for send, get, edit and delete data. For errors handling use
 ## Front End
 
 **Tech stacks used:**\
+
 **ReactJS** (CRA)\
 **Redux** for state management and API calls.\
 For form values validation used **formik** modul.\
