@@ -17,7 +17,7 @@ const initialState = usersAdapter.getInitialState({
 
 export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
   try {
-    const { data } = await axios.get('http://localhost:5000/api/users');
+    const { data } = await axios.get(`${process.env.REACT_APP_HOST}/api/users`);
 
     return data;
   } catch (error) {
@@ -30,7 +30,7 @@ export const createUser = createAsyncThunk(
   async (newUser) => {
     try {
       const { data } = await axios.post(
-        'http://localhost:5000/api/users',
+        `${process.env.REACT_APP_HOST}/api/users`,
         newUser
       );
 
@@ -45,12 +45,13 @@ export const updateUser = createAsyncThunk(
   'users/updateUser',
   async (userData) => {
     try {
-      const { data } = await axios.put(
-        `http://localhost:5000/api/users/${userData.id}`,
+      const { _id } = userData;
+      await axios.put(
+        `${process.env.REACT_APP_HOST}/api/users/${_id}`,
         userData
       );
 
-      return data;
+      return userData;
     } catch (error) {
       return error.message;
     }
@@ -62,7 +63,7 @@ export const deleteUser = createAsyncThunk(
   async (userId) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:5000/api/users/${userId}`
+        `${process.env.REACT_APP_HOST}/api/users/${userId}`
       );
 
       return data;
@@ -83,24 +84,30 @@ const userSlice = createSlice({
       })
       .addCase(fetchUsers.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.users = action.payload;
+        usersAdapter.upsertMany(state, action.payload);
       })
       .addCase(fetchUsers.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
       })
       .addCase(createUser.fulfilled, (state, action) => {
-        state.users.push(action.payload);
+        usersAdapter.addOne(state, action.payload);
       })
       .addCase(updateUser.fulfilled, (state, action) => {
         usersAdapter.upsertOne(state, action.payload);
       })
       .addCase(deleteUser.fulfilled, (state, action) => {
-        const id = action.payload._id;
-        usersAdapter.removeOne(state, id);
-        state.users = state.users.filter((user) => user._id !== id);
+        const { _id } = action.payload;
+        usersAdapter.removeOne(state, _id);
       });
   },
 });
+
+export const { selectAll: selectAllUsers } = usersAdapter.getSelectors(
+  (state) => state.users
+);
+
+export const getUsersStatus = (state) => state.users.status;
+export const getUsersError = (state) => state.users.error;
 
 export default userSlice.reducer;
