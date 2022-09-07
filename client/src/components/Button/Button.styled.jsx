@@ -35,11 +35,11 @@ export const ButtonStyled = styled.button`
 
       case 'info':
         return css`
-          background-color: #3e8ed0;
+          background-color: #485fc7;
           color: #fff;
 
           &:hover {
-            background-color: #3488ce;
+            background-color: #3e56c4;
           }
         `;
 
