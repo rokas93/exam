@@ -7,12 +7,13 @@ import { createUser } from '../../features/userSlice';
 import Button from '../Button';
 import RESERVATION_TIMES from '../../shared/constants/reservationTimes';
 import dateToSeconds from '../../shared/helpers/dateToSeconds';
+import { selectAllUsers } from '../../features/userSlice';
 
 const Form = () => {
   const [status, setStatus] = useState('idle');
   const [aviableTimes, setAviableTimes] = useState(null);
 
-  const { users } = useSelector((state) => state.users);
+  const users = useSelector(selectAllUsers);
   const dispatch = useDispatch();
 
   const {
