@@ -5,7 +5,7 @@ export const TableStyled = styled.div`
   flex-direction: column;
   gap: 10px;
 
-  margin: 50px 0;
+  padding: 50px 0;
 `;
 
 export const TableContainer = styled.div`
