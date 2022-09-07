@@ -12,18 +12,19 @@ import { useFormik } from 'formik';
 import userValidation from '../../shared/userValidation';
 import RESERVATION_TIMES from '../../shared/constants/reservationTimes';
 import dateToSeconds from '../../shared/helpers/dateToSeconds';
+import { selectAllUsers } from '../../features/userSlice';
 
-const ListItem = ({ user }) => {
+const ListItem = ({ user, setPage }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [status, setStatus] = useState('idle');
   const [aviableTimes, setAviableTimes] = useState(null);
 
-  const { users } = useSelector((state) => state.users);
+  const users = useSelector(selectAllUsers);
   const dispatch = useDispatch();
 
   const { values, errors, handleChange, handleSubmit } = useFormik({
     initialValues: {
-      id: user._id,
+      _id: user._id,
       name: user.name,
       email: user.email,
       date: user.date,
@@ -31,17 +32,10 @@ const ListItem = ({ user }) => {
     },
     validationSchema: userValidation,
     onSubmit: (values) => {
-      if (status === 'idle') {
-        try {
-          setIsEdit(false);
-
-          setStatus('pending');
-          dispatch(updateUser(values));
-          setStatus('idle');
-        } catch (error) {
-          console.log(error);
-        }
-      }
+      setIsEdit(false);
+      setStatus('pending');
+      dispatch(updateUser(values));
+      setStatus('idle');
     },
   });
 
@@ -67,6 +61,8 @@ const ListItem = ({ user }) => {
         setStatus('pending');
         dispatch(deleteUser(id));
         setStatus('idle');
+
+        setPage(0);
       } catch (error) {
         console.log(error);
       }
