@@ -1,19 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   ButtonWrapperStyled,
   InputStyled,
   ListItemStyled,
+  SelectStyled,
 } from './ListItem.styled';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteUser, updateUser } from '../../features/userSlice';
 import Button from '../Button';
 import { useFormik } from 'formik';
 import userValidation from '../../shared/userValidation';
+import RESERVATION_TIMES from '../../shared/constants/reservationTimes';
+import dateToSeconds from '../../shared/helpers/dateToSeconds';
 
 const ListItem = ({ user }) => {
-  const dispatch = useDispatch();
   const [isEdit, setIsEdit] = useState(false);
   const [status, setStatus] = useState('idle');
+  const [aviableTimes, setAviableTimes] = useState(null);
+
+  const { users } = useSelector((state) => state.users);
+  const dispatch = useDispatch();
 
   const { values, errors, handleChange, handleSubmit } = useFormik({
     initialValues: {
@@ -39,6 +45,22 @@ const ListItem = ({ user }) => {
     },
   });
 
+  const handleDateChange = (currentDate, users) => {
+    if (currentDate) {
+      const results = RESERVATION_TIMES.filter((time) =>
+        users.every(
+          (user) =>
+            dateToSeconds(currentDate, time) !==
+            dateToSeconds(user.date, user.time)
+        )
+      );
+
+      setAviableTimes(results);
+    }
+
+    return;
+  };
+
   const handleDelete = (id) => {
     if (status === 'idle') {
       try {
@@ -53,7 +75,12 @@ const ListItem = ({ user }) => {
 
   const handleEdit = () => {
     setIsEdit(true);
+    values.time = '';
   };
+
+  useEffect(() => {
+    handleDateChange(values.date, users);
+  }, [values.date, users]);
 
   return (
     <ListItemStyled onSubmit={handleSubmit}>
@@ -85,7 +112,8 @@ const ListItem = ({ user }) => {
         value={values.date}
         isError={errors.date}
       />
-      <InputStyled
+
+      <SelectStyled
         type='time'
         id={'time'}
         disabled={!isEdit}
@@ -93,7 +121,18 @@ const ListItem = ({ user }) => {
         onChange={handleChange}
         value={values.time}
         isError={errors.time}
-      />
+      >
+        <option value={isEdit ? '' : values.time}>
+          {isEdit ? 'Choose time' : values.time}
+        </option>
+
+        {aviableTimes?.map((time, index) => (
+          <option key={index} value={time}>
+            {time}
+          </option>
+        ))}
+      </SelectStyled>
+
       <ButtonWrapperStyled>
         <Button
           type={'button'}
