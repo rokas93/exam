@@ -1,22 +1,35 @@
-import { useState } from 'react';
-import { FormStyled, InputStyled } from './Form.styled';
-import { useDispatch } from 'react-redux';
+import { useCallback, useEffect, useState } from 'react';
+import { FormStyled, InputStyled, SelectStyled } from './Form.styled';
+import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import userValidation from '../../shared/userValidation';
 import { createUser } from '../../features/userSlice';
 import Button from '../Button';
+import RESERVATION_TIMES from '../../shared/constants/reservationTimes';
+import dateToSeconds from '../../shared/helpers/dateToSeconds';
 
 const Form = () => {
   const [status, setStatus] = useState('idle');
+  const [aviableTimes, setAviableTimes] = useState(null);
+
+  const { users } = useSelector((state) => state.users);
   const dispatch = useDispatch();
 
-  const { values, errors, handleChange, handleSubmit } = useFormik({
+  const {
+    values,
+    errors,
+    handleChange,
+    handleSubmit,
+    setFieldValue,
+    resetForm,
+  } = useFormik({
     initialValues: {
       name: '',
       email: '',
       date: '',
       time: '',
     },
+    enableReinitialize: true,
     validationSchema: userValidation,
     onSubmit: (values) => {
       if (status === 'idle') {
@@ -24,12 +37,39 @@ const Form = () => {
           setStatus('pending');
           dispatch(createUser(values));
           setStatus('idle');
+          resetForm({ values: '' });
         } catch (error) {
           console.log(error);
         }
       }
     },
   });
+
+  const handleDateChange = useCallback(
+    (currentDate, users) => {
+      if (currentDate) {
+        setFieldValue('time', '');
+
+        const results = RESERVATION_TIMES.filter((time) =>
+          users.every(
+            (user) =>
+              dateToSeconds(currentDate, time) !==
+              dateToSeconds(user.date, user.time)
+          )
+        );
+
+        setAviableTimes(results);
+        return;
+      }
+
+      return;
+    },
+    [setFieldValue]
+  );
+
+  useEffect(() => {
+    handleDateChange(values.date, users);
+  }, [values.date, users, handleDateChange]);
 
   return (
     <FormStyled onSubmit={handleSubmit}>
@@ -73,19 +113,25 @@ const Form = () => {
 
       <label htmlFor='time'>
         Reservation time:
-        <InputStyled
-          type='time'
+        <SelectStyled
+          name='time'
           id='time'
-          min={'08:00'}
-          max={'17:00'}
           onChange={handleChange}
           value={values.time}
+          disabled={!values.date}
           isError={errors.time}
-        />
+        >
+          <option>Choose time</option>
+          {aviableTimes?.map((time, index) => (
+            <option key={index} value={time}>
+              {time}
+            </option>
+          ))}
+        </SelectStyled>
         {errors.time && <span>{errors.time}</span>}
       </label>
 
-      <Button text={'Submit'} bg={'success'} />
+      <Button type={'submit'} text={'Submit'} bg={'success'} />
     </FormStyled>
   );
 };
