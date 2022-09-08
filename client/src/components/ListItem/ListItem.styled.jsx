@@ -9,6 +9,9 @@ export const ListItemStyled = styled.form`
 
   list-style: none;
 
+  box-shadow: rgb(0 0 0 / 16%) 0px 1px 4px;
+  padding: 10px;
+
   & label svg {
     color: #363636;
   }
