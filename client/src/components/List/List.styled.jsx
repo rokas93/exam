@@ -18,6 +18,10 @@ export const ButtonStyled = styled.button`
 
   cursor: pointer;
 
+  &:hover {
+    border-color: ${({ isActive }) => !isActive && '#b5b5b5'};
+  }
+
   ${({ isActive }) =>
     isActive &&
     css`
