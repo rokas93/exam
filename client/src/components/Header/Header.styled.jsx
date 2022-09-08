@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const HeaderStyled = styled.div`
+export const HeaderStyled = styled.header`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
