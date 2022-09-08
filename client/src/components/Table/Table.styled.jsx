@@ -3,9 +3,8 @@ import styled from 'styled-components';
 export const TableStyled = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
 
-  padding: 50px 0;
+  height: 100vh;
 `;
 
 export const TableContainer = styled.div`
