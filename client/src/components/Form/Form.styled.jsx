@@ -1,11 +1,9 @@
 import styled from 'styled-components';
 
 export const FormStyled = styled.form`
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
-
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 
   & label::before {
     content: '* ';
@@ -15,7 +13,6 @@ export const FormStyled = styled.form`
   & label span {
     color: #f14668;
     font-size: 14px;
-    padding: 5px 10px;
 
     position: absolute;
   }
@@ -30,6 +27,7 @@ export const InputStyled = styled.input`
   display: block;
   padding: 5px 10px;
   margin-top: 10px;
+  width: 100%;
 
   box-shadow: ${({ isError }) =>
     isError
@@ -74,4 +72,9 @@ export const SelectStyled = styled.select`
     box-shadow: 0 0 0 0.125em rgb(72 95 199 / 25%);
     border-color: #485fc7;
   }
+`;
+
+export const ButtonsWrapperStyled = styled.div`
+  display: flex;
+  gap: 10px;
 `;
