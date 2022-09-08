@@ -1,10 +1,15 @@
 import React from 'react';
 import { ButtonStyled } from './Button.styled';
 
-const Button = ({ text, action, bg, type }) => {
+const Button = (props) => {
   return (
-    <ButtonStyled type={type} onClick={action} bg={bg}>
-      {text}
+    <ButtonStyled
+      type={props.type}
+      onClick={props.action}
+      bg={props.bg}
+      isRadio={props.isRadio}
+    >
+      {props.text}
     </ButtonStyled>
   );
 };
