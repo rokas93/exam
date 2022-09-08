@@ -32,4 +32,6 @@ export const ButtonsWrapperStyled = styled.div`
   gap: 10px;
 
   align-self: center;
+
+  padding-top: 50px;
 `;
