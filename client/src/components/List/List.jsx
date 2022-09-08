@@ -11,35 +11,54 @@ import {
 } from '../../features/userSlice';
 
 const List = () => {
-  const dispatch = useDispatch();
+  // -- States
   const [page, setPage] = useState(0);
+  const [editId, setEditId] = useState(null);
 
+  // -- Redux
+  const dispatch = useDispatch();
   const users = useSelector(selectAllUsers);
   const status = useSelector(getUsersStatus);
   const error = useSelector(getUsersError);
 
+  // -- Custom hooks
   const paginatedUsers = usePagination(users, 10);
 
+  console.log(paginatedUsers);
+
+  // -- Side effects
   useEffect(() => {
     if (status === 'idle') {
       dispatch(fetchUsers());
     }
   }, [dispatch, status]);
 
+  // -- Returned content
   let content;
 
   if (status === 'loading') {
     content = <p>Loading...</p>;
   } else if (status === 'succeeded') {
-    content = paginatedUsers[page].map((user) => (
-      <ListItem key={user._id} user={user} setPage={setPage} />
-    ));
+    content = !paginatedUsers.length ? (
+      <p>No active reservations found.</p>
+    ) : (
+      paginatedUsers[page]?.map((user) => (
+        <ListItem
+          key={user._id}
+          user={user}
+          setPage={setPage}
+          setEditId={setEditId}
+          isEdit={editId === user._id}
+        />
+      ))
+    );
   } else if (status === 'failed') {
     content = <p>{error}</p>;
   }
 
   return (
     <ListStyled>
+      <h3>Active reservations:</h3>
       {content}
       <ButtonsWrapperStyled>
         {paginatedUsers.map((_, index) => (
