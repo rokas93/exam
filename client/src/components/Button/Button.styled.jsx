@@ -60,6 +60,7 @@ export const ButtonStyled = styled.button`
         return css`
           background-color: transparent;
           color: rgba(10, 10, 10, 0.2);
+          padding: 0;
 
           &:hover {
             color: rgba(10, 10, 10, 0.3);
