@@ -116,6 +116,7 @@ const Form = ({ onClose }) => {
           onChange={handleDateChange}
           value={values.date}
           isError={errors.date}
+          min={new Date().toISOString().split('T')[0]}
           ref={dateInput}
         />
         {errors.date && <span>{errors.date}</span>}
