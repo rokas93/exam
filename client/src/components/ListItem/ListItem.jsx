@@ -139,6 +139,7 @@ const ListItem = ({ user, setPage, setEditId, isEdit }) => {
           onChange={handleDateChange}
           value={values.date}
           isError={errors.date}
+          min={new Date().toISOString().split('T')[0]}
           ref={dateInput}
         />
       </LabelStyled>
