@@ -1,6 +1,6 @@
 # Users reservation app
 
-This app functionality: create new, edit and delete existing data. All created data is visible in UI.
+This app functionality: create new, edit, and delete existing data. All created data is visible in UI.
 
 ## Back End
 
@@ -10,7 +10,7 @@ NodeJS framework **ExpressJS**.\
 No sql database **mongoDB**.
 
 **More information about Back End**\
-We have four routes for send, get, edit and delete data. For errors handling used asyncHandler middleware. Also we have model schema for data validation.
+We have four routes for sending, getting, editing, and deleting data. For error handling used asyncHandler middleware. Also, we have a model schema for data validation.
 
 ## Front End
 
@@ -18,13 +18,13 @@ We have four routes for send, get, edit and delete data. For errors handling use
 
 **ReactJS** (CRA)\
 **Redux** for state management and API calls.\
-For form values validation used **formik** modul.\
-Frond End side validation schema was build with **yup**.\
+For form values validation used **formik** model.\
+Frond End side validation schema was built with **yup**.\
 For components styling was used **styled-components**.
 
 **More information about Front End**\
-We have user registration form used for new user creation. Created user displays in UI. Existing user can be deleted or updated.
+We have a user registration form used for new user creation. Created user displays in UI. Existing users can be deleted or updated.
 
 ## Recap
 
-This project was good learning process for Back End and Front End implementation.
+This project was a good learning process for Back End and Front End implementation.
