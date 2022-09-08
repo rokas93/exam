@@ -1,5 +1,10 @@
-import { useCallback, useEffect, useState } from 'react';
-import { FormStyled, InputStyled, SelectStyled } from './Form.styled';
+import { useState, useRef, useEffect } from 'react';
+import {
+  ButtonsWrapperStyled,
+  FormStyled,
+  InputStyled,
+  SelectStyled,
+} from './Form.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import userValidation from '../../shared/userValidation';
@@ -9,13 +14,20 @@ import RESERVATION_TIMES from '../../shared/constants/reservationTimes';
 import dateToSeconds from '../../shared/helpers/dateToSeconds';
 import { selectAllUsers } from '../../features/userSlice';
 
-const Form = () => {
+const Form = ({ onClose }) => {
+  // -- States
   const [status, setStatus] = useState('idle');
   const [aviableTimes, setAviableTimes] = useState(null);
 
+  // -- Redux
   const users = useSelector(selectAllUsers);
   const dispatch = useDispatch();
 
+  // Ref
+  const nameInput = useRef(null);
+  const dateInput = useRef(null);
+
+  // -- Form validation
   const {
     values,
     errors,
@@ -39,6 +51,7 @@ const Form = () => {
           dispatch(createUser(values));
           setStatus('idle');
           resetForm({ values: '' });
+          onClose();
         } catch (error) {
           console.log(error);
         }
@@ -46,31 +59,25 @@ const Form = () => {
     },
   });
 
-  const handleDateChange = useCallback(
-    (currentDate, users) => {
-      if (currentDate) {
-        setFieldValue('time', '');
+  // -- Handlers
+  const handleDateChange = () => {
+    setFieldValue('date', dateInput.current.value);
 
-        const results = RESERVATION_TIMES.filter((time) =>
-          users.every(
-            (user) =>
-              dateToSeconds(currentDate, time) !==
-              dateToSeconds(user.date, user.time)
-          )
-        );
+    const results = RESERVATION_TIMES.filter((time) =>
+      users.every(
+        (user) =>
+          dateToSeconds(dateInput.current.value, time) !==
+          dateToSeconds(user.date, user.time)
+      )
+    );
 
-        setAviableTimes(results);
-        return;
-      }
-
-      return;
-    },
-    [setFieldValue]
-  );
+    setAviableTimes(results);
+    setFieldValue('time', '');
+  };
 
   useEffect(() => {
-    handleDateChange(values.date, users);
-  }, [values.date, users, handleDateChange]);
+    nameInput.current.focus();
+  }, []);
 
   return (
     <FormStyled onSubmit={handleSubmit}>
@@ -83,6 +90,7 @@ const Form = () => {
           onChange={handleChange}
           value={values.name}
           isError={errors.name}
+          ref={nameInput}
         />
         {errors.name && <span>{errors.name}</span>}
       </label>
@@ -105,9 +113,10 @@ const Form = () => {
         <InputStyled
           type='date'
           id='date'
-          onChange={handleChange}
+          onChange={handleDateChange}
           value={values.date}
           isError={errors.date}
+          ref={dateInput}
         />
         {errors.date && <span>{errors.date}</span>}
       </label>
@@ -132,7 +141,10 @@ const Form = () => {
         {errors.time && <span>{errors.time}</span>}
       </label>
 
-      <Button type={'submit'} text={'Submit'} bg={'success'} />
+      <ButtonsWrapperStyled>
+        <Button type={'submit'} text={'Submit'} bg={'success'} />
+        <Button type={'button'} text={'Cancel'} action={onClose} />
+      </ButtonsWrapperStyled>
     </FormStyled>
   );
 };
