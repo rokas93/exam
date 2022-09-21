@@ -1,7 +1,7 @@
 # Users reservation app
 
 This app functionality: create new, edit, and delete existing data. All created data is visible in UI.\
-Video: (here)[https://youtu.be/H-kAtDd0PFA]
+Video: [here](https://youtu.be/H-kAtDd0PFA)
 
 ## Back End
 
